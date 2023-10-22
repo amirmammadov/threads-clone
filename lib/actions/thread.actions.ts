@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import Thread from "../models/thread.model";
 import User from "../models/user.model";
 import { connectToDB } from "../mongoose";
+import Community from "../models/community.model";
 
 interface Params {
   text: string;
@@ -49,10 +50,10 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
       path: "author",
       model: User,
     })
-    // .populate({
-    //   path: "community",
-    //   model: Community,
-    // })
+    .populate({
+      path: "community",
+      model: Community,
+    })
     .populate({
       path: "children",
       populate: {
@@ -83,11 +84,11 @@ export async function fetchThreadById(threadId: string) {
         model: User,
         select: "_id id name image",
       })
-      // .populate({
-      //   path:'community',
-      //   model:Community,
-      //   select:"_id id name image"
-      // })
+      .populate({
+        path: "community",
+        model: Community,
+        select: "_id id name image",
+      })
       .populate({
         path: "children",
         populate: [
