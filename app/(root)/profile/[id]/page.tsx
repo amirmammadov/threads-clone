@@ -2,22 +2,20 @@ import Image from "next/image";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-import ProfileHeader from "@/components/shared/ProfileHeader";
-
-import { fetchUser } from "@/lib/actions/user.actions";
-
 import { profileTabs } from "@/constants";
 
 import ThreadsTab from "@/components/shared/ThreadsTab";
-
+import ProfileHeader from "@/components/shared/ProfileHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const Profile = async ({ params }: { params: { id: string } }) => {
+import { fetchUser } from "@/lib/actions/user.actions";
+
+async function Page({ params }: { params: { id: string } }) {
   const user = await currentUser();
   if (!user) return null;
 
   const userInfo = await fetchUser(params.id);
-  if (!userInfo) redirect("/onboarding");
+  if (!userInfo?.onboarded) redirect("/onboarding");
 
   return (
     <section>
@@ -58,8 +56,8 @@ const Profile = async ({ params }: { params: { id: string } }) => {
               value={tab.value}
               className="w-full text-light-1"
             >
+              {/* @ts-ignore */}
               <ThreadsTab
-                //@ts-ignore
                 currentUserId={user.id}
                 accountId={userInfo.id}
                 accountType="User"
@@ -70,6 +68,5 @@ const Profile = async ({ params }: { params: { id: string } }) => {
       </div>
     </section>
   );
-};
-
-export default Profile;
+}
+export default Page;
