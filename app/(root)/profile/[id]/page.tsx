@@ -17,7 +17,7 @@ const Profile = async ({ params }: { params: { id: string } }) => {
   if (!user) return null;
 
   const userInfo = await fetchUser(params.id);
-  if (!userInfo.onboarded) redirect("/onboarding");
+  if (!userInfo) redirect("/onboarding");
 
   return (
     <section>
