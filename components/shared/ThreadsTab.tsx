@@ -32,16 +32,12 @@ interface Result {
 }
 
 interface Props {
-  currenctUserId: string;
+  currentUserId: string;
   accountId: string;
   accountType: string;
 }
 
-const ThreadsTab = async ({
-  currenctUserId,
-  accountId,
-  accountType,
-}: Props) => {
+const ThreadsTab = async ({ currentUserId, accountId, accountType }: Props) => {
   let result: Result;
 
   result = await fetchUserPosts(accountId);
@@ -56,7 +52,7 @@ const ThreadsTab = async ({
         <ThreadCard
           key={thread._id}
           id={thread._id}
-          currentUserId={currenctUserId}
+          currentUserId={currentUserId}
           parentId={thread.parentId}
           content={thread.text}
           author={
